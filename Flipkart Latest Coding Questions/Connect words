@@ -1,0 +1,107 @@
+Connect words
+
+Example 1:
+
+Input:
+D={"poon","plee","same","poie","plea","plie","poin"}
+start="toon"
+target="plea"
+Output: 7
+Explanation:
+The length of the smallest transformation sequence
+from toon to plea is 7 i.e. toon -> poon -> poin ->
+poie -> plie -> plee -> plea
+ 
+
+Example 2:
+
+Input:
+D= {"aaa", "aab","abc"} 
+start="aaa"
+target="aab"
+Output: 2
+Explanation:
+The length of the smallest transformation 
+sequence from aaa to aab is 2 i.e. aaa -> aab
+
+Your Task: 
+You do not need to read input or print anything. Complete the function WordLadderLength() which takes the string start, end and a dictionary D of unique words of equal lengths as input parameters and returns the length of the shortest transformation sequence from start to target.
+Return 0 if there is no such transformation sequence.
+
+
+Expected Time Complexity: O(N2M)
+Expected Auxiliary Space: O(N*M)
+
+
+Constraints: 
+1 <= N <= 100
+1 <= Length of the words (M) <= 10
+where N is the size of the set denoting a dictionary D of unique words of equal lengths M
+
+
+    #SOLUTION IN C++
+    
+    int WordLadderLength(string start, string target, set<string>& D) 
+{   
+    
+    if (D.find(target) == D.end())
+        return 0;
+    D.erase(start);
+
+    
+    int level = 0, wordlength = start.size();
+
+    
+    queue<string> Q;
+    Q.push(start);
+    
+    while (!Q.empty()) 
+    {
+       
+        ++level;
+
+    
+        int sizeofQ = Q.size();
+
+        
+        for (int i = 0; i < sizeofQ; ++i) 
+        {
+        
+            string word = Q.front();
+            Q.pop();
+
+           
+            for (int pos = 0; pos < wordlength; ++pos) 
+            {
+                
+                char orig_char = word[pos];
+
+
+              
+                for (char c = 'a'; c <= 'z'; ++c) {
+                    word[pos] = c;
+
+                    if (word == target)
+                        return level + 1;
+                    
+                    
+                    if (D.find(word) == D.end())
+                        continue;
+                    D.erase(word);
+
+                    Q.push(word);
+                }
+
+               
+                word[pos] = orig_char;
+            }
+        }
+    }
+    
+    return 0;
+}
+
+
+
+
+
