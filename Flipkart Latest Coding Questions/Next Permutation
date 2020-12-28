@@ -1,0 +1,74 @@
+    Next Permutation
+
+
+Given an array perm[] of size N denoting a number. Find its next permutation. ie- rearrange the digits into the lexicographically next greater permutation. If such arrangement is not possible, it must be rearranged as the lowest possible order ie, sorted in an ascending order.
+
+
+Example 1:
+
+Input:
+N = 6
+perm[] = {1, 2, 3, 6, 5, 4}
+Output: 1 2 4 3 5 6
+Explanation: 124356 > 123654 and is the 
+lexicographically next permutation.
+
+Example 2:
+
+Input:
+N = 4
+perm[] = {4, 3, 2, 1}
+Output: 1 2 3 4
+Explanation: Since 4321 can not be rearranged
+to produce a bigger number, it is rearranged 
+is ascending order.
+
+Your Task:  
+You don't need to read input or print anything. Your task is to complete the function nextPermutation() which takes the array perm[] and its size N as input parameters, and rearranges the array into the lexicographically next greater permutation of digits. 
+
+
+Expected Time Complexity: O(N)
+Expected Auxiliary Space: O(1)
+
+ 
+
+Constraints:
+1 ≤ N ≤ 105
+0 ≤ perm[i] ≤ 105
+
+#SOLUTION IN C++
+
+
+class Solution {
+public:
+    void nextPermutation(int perm[], int N) {
+          int i=N-2;
+	    while(i>=0 && perm[i+1]<=perm[i]){
+	        i--;
+	    }
+	    if(i>=0){
+	        int j=N-1;
+	        while(j>=0 && perm[j]<=perm[i]){
+	            j--;
+	        }
+	        int temp=perm[i];
+	        perm[i]=perm[j];
+	        perm[j]=temp;
+	    }
+	    i++;
+	    int end=N-1;
+	    while(i<end){
+	        int temp=perm[i];
+	        perm[i]=perm[end];
+	        perm[end]=temp;
+	        i++;
+	        end--;
+	    }
+        
+    }
+};
+
+
+
+
+
