@@ -1,0 +1,115 @@
+Find a pair with given target in BST
+
+Given a Binary Search Tree and a target sum. Check whether there is a pair of Nodes in the BST with value summing up to the target sum. 
+
+
+Example 1:
+
+Input:
+        2
+      /   \
+     1     3
+sum = 5
+Output: 1
+Explanation: 2+3 = 5
+ 
+
+Example 2:
+
+Input:
+           6
+          /    
+         5     
+        /
+       3 
+     /  \
+    1    4
+sum = 2
+Output: 0
+Explanation: Sum 2 is not possible.
+ 
+
+Your Task:
+You don't need to read input or print anything. Your task is to complete the function isPairPresent() that takes the root node and a target value as input parameters and returns 1 if there is a pair of nodes in the BST with values summing up to the target sum, else returns 0. 
+
+
+Expected Time Complexity: O(N)
+Expected Auxiliary Space: O(Height of the BST)
+
+
+Constraints:
+1<=Number of Nodes<=105
+1<=K<=1000005
+
+#Solution In C++
+
+stack <Node*> forw, rev; 
+ 
+void pushRight (Node *rt)
+{
+    while (rt != NULL)
+    {
+        rev.push (rt);
+        rt = rt->right;
+    }
+}
+ 
+void pushLeft (Node *rt)
+{
+    while (rt != NULL)
+    {
+        forw.push (rt);
+        rt = rt->left;
+    }
+}
+ 
+int forwNext ()
+{
+    if (forw.empty ()) return INT_MIN;
+    Node *res = forw.top ();
+    forw.pop ();
+    
+    pushLeft (res->right);
+    return res->data;
+}
+ 
+int revNext ()
+{
+    if (rev.empty ()) return INT_MIN;
+    Node *res = rev.top ();
+    rev.pop ();
+    
+    pushRight (res->left);
+    return res->data;
+}
+ 
+int isPairPresent(Node* A, int B) {
+    // clearing the stacks
+    while (!forw.empty ()) forw.pop ();
+    while (!rev.empty ()) rev.pop ();
+    
+    if (A == NULL) return 0;
+    pushLeft(A);
+    pushRight (A);
+    
+    int v1 = forwNext ();
+    int v2 = revNext  ();
+    int sum;
+    
+    while (v1 != INT_MIN and v2 != INT_MIN and v1 != v2)
+    {
+        sum = v1 + v2;
+        if (sum == B)
+        {
+            return 1;   
+        }
+            
+        if (sum > B) // decrease the sum
+            v2 = revNext ();
+        
+        else // increase the sum
+            v1 = forwNext ();
+    }
+    
+    return 0;
+}
